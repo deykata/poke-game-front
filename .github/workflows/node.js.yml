@@ -1,7 +1,7 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Lint, Test & Build
+name: Build game
 
 on:
   push:
@@ -27,9 +27,5 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install dependencies
       run: npm ci
-    - name: Lint
-      run: npm run lint
-    - name: Test
-      run: npm run test:ci
     - name: Build
       run: npm run build:ci
