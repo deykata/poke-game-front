@@ -1,0 +1,8 @@
+<header class="view header">
+    <a href="javascript:void(0)" (click)="toggleSettings()">{{ 'HEADER.settings' | translate }}</a>
+    <a href="javascript:void(0)" (click)="signOut()">{{ 'HEADER.signOut' | translate }}</a>
+</header>
+
+<app-ui-modal [trigger]="showSettings">
+    <app-settings (saved)="toggleSettings()"></app-settings>
+</app-ui-modal>

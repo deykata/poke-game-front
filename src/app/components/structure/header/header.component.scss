@@ -1,0 +1,16 @@
+.header {
+    padding-top: 15px;
+    display: flex;
+    justify-content: space-between;
+
+    a {
+        font-size: 14px;
+        font-weight: 600;
+        color: #3D5AA6;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

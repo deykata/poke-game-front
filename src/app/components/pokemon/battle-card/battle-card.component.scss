@@ -1,0 +1,57 @@
+.pokemon-data {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    font-weight: 600;
+
+    &--name {
+        position: relative;
+    }
+
+}
+
+.pokemon-visual img {
+    transition: .2s;
+}
+
+.info-modal {
+    position: absolute;
+    top: 150%;
+    left: calc(100% - 18px);
+    background: var(--background-light);
+    border-radius: 3px;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,.1);
+    padding: 10px 15px;
+    width: 200px;
+    text-align: left;
+
+    p {
+        font-size: 14px;
+        font-weight: 400;
+        margin: 3px 0 5px;
+        text-transform: capitalize;
+    }
+}
+
+.attacked {
+    background-color: red;
+
+    .pokemon-visual img {
+        transform: scale(.95);
+    }
+}
+
+.info {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid gray;
+    border-radius: 50%;
+    font-size: 12px;
+    vertical-align: bottom;
+    color: gray;
+    margin-left: 3px;
+    font-style: italic;
+    font-family: initial;
+    cursor: help;
+}

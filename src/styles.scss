@@ -1,0 +1,157 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+    /* Colors */
+    --background-light: #ffffff;
+    --primary-yellow: #FFCB02;
+    --primary-blue: #3D5AA6;
+    --text: #000000;
+}
+
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,input,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video,button,textarea {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    box-sizing: border-box;
+    list-style: none;
+}
+
+body {
+    font-family: sans-serif;
+    background: var(--background-light);
+}
+
+.view {
+    max-width: 800px;
+    margin: auto;
+    
+    &.page {
+        margin: 20px auto 0;
+    }
+}
+
+img {
+    max-width: 100%;
+}
+
+h1 {
+    font-weight: 700;
+    font-size: 32px;
+    margin: 5px 0;
+    color: var(--text);
+}
+
+h2 {
+    font-weight: 500;
+    font-size: 24px;
+    margin: 5px 0 15px;
+    color: var(--text);
+}
+
+.grid {
+    display: flex;
+    margin: 0 -5px;
+    flex-wrap: wrap;
+    align-items: center;
+    
+    &--item {
+        text-align: center;
+        text-decoration: none;
+    }
+        
+    .col6 {
+        flex: 1 1 50%;
+        max-width: 50%;
+        padding: 0 5px;
+    }
+}
+
+.card {
+    border: 3px solid var(--primary-yellow);
+    border-radius: 3px;
+    background-color: azure;
+
+    &.blue {
+        border-color: var(--primary-blue);
+
+        .title {
+            background-color: var(--primary-blue);
+            color: #ffffff;
+        }
+    }
+
+    .title {
+        background-color: var(--primary-yellow);
+        padding: 10px;
+    }
+}
+
+.btn {
+    padding: 5px 15px;
+    text-transform: capitalize;
+    margin: 5px 0;
+    background-color: #FFCB02;
+    cursor: pointer;
+    position: relative;
+    transform: skew(-15deg);
+    transition: .2s;
+    transition-delay: .05s;
+    overflow: hidden;
+
+    span {
+        position: relative;
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        bottom: 0%;
+        width: 100%;
+        transition: .2s;
+        background-color: #3D5AA6;
+    }
+
+    &:hover {
+        color: #ffffff;
+
+        &::before {
+            transform: translateX(100%);
+        }
+    }
+
+    &[disabled] {
+        cursor: not-allowed;
+        &::before {
+            display: none;
+        }
+    }
+}
+
+.form-item {
+    margin-bottom: 5px;
+
+    label {
+        width: 100px;
+        display: inline-block;
+        color: var(--text);
+    }
+
+    input, select {
+        border: 1px solid gray;
+        border-radius: 3px;
+        width: 130px;
+        padding: 3px 6px;
+    }
+
+    span {
+        color: var(--text);
+    }
+
+    .invalid {
+        border-color: red;
+    }
+}

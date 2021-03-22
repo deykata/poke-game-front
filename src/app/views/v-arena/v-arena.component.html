@@ -1,0 +1,59 @@
+<div class="view page">
+    <h1>{{ 'ARENA.title' | translate }}</h1>
+    <p *ngIf="progressStage == 0">{{ 'ARENA.progressStage0' | translate}}</p>
+    
+    <div class="pokemon-selection" *ngIf="progressStage == 1">
+        <h2>{{ 'ARENA.progressStage1' | translate }}</h2>
+        <div class="grid">
+            <a class="grid--item col6 pgr-item" href="javascript:void(0);" (click)="selectPokemon(i)" *ngFor="let pokemon of selectedPokemons; let i = index;">
+                <span class="inner">
+                    <img [src]="pokemon.image" [alt]="pokemon.name">
+                    <span>{{ pokemon.name }}</span>
+                </span>
+            </a>
+        </div>
+    </div>
+
+    <div class="pokemon-battle" *ngIf="progressStage >= 2">
+        <div class="grid">
+            <div class="grid--item col6">
+                <div class="pokemon player">
+                    <app-battle-card [title]="player" [pokemon]="playerPokemon"></app-battle-card>
+                </div>
+            </div>
+            <div class="grid--item col6">
+                <div class="pokemon enemy">
+                    <app-battle-card title="COM" [pokemon]="enemyPokemon" type="blue"></app-battle-card>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pokemon-actions" *ngIf="progressStage == 2">
+        <div class="card">
+            <div class="actions">
+                <div class="grid" *ngIf="playerTurn; else playerWaiting">
+                    <p class="grid--item col6" [innerHTML]="'ARENA.playerTurnMsg' | translate: {name: playerPokemon.name}"></p>
+                    <ul class="grid--item col6 grid">
+                        <li class="grid--item col6" *ngFor="let attack of playerPokemon.attacks; let i = index;">
+                            <app-ui-button [text]="attack.move.name" (emitter)="launchAttack(i, attack, 'player')" [full]="true"></app-ui-button>
+                        </li>
+                    </ul>
+                </div>
+                <ng-template #playerWaiting>
+                    <p class="waiting" [innerHTML]="'ARENA.enemyTurnMsg' | translate: {name: enemyPokemon.name}"></p>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+
+    <div class="restart-arena" *ngIf="progressStage != 0">
+        <app-ui-button [text]="'ARENA.reload' | translate" (emitter)="restartArena()"></app-ui-button>
+    </div>
+</div>
+
+<app-ui-modal [trigger]="showModal">
+    <app-battle-result [result]="playerPokemon.hp > 0 ? true : false">
+        <app-ui-button [text]="'ARENA.reload' | translate" (emitter)="restartArena()"></app-ui-button>
+    </app-battle-result>
+</app-ui-modal>

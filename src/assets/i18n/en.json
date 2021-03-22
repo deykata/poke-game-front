@@ -1,0 +1,38 @@
+{
+    "HEADER": {
+        "settings": "Settings",
+        "signOut": "Sign out"
+    },
+    "SETTINGS": {
+        "title": "Settings",
+        "player": "Player",
+        "lang": "Language",
+        "theme": "Theme",
+        "render": "Render",
+        "LANG_OPTIONS": {
+            "en": "English",
+            "es": "Español"
+        },
+        "THEME_OPTIONS": {
+            "light": "Light",
+            "dark": "Dark"
+        },
+        "RENDER_OPTIONS": {
+            "html": "HTML",
+            "canvas": "Canvas"
+        },
+        "button": "Save"
+    },
+    "ARENA": {
+        "title": "Battle arena",
+        "progressStage0": "Loading Pokemons...",
+        "progressStage1": "Choose your Pokemon",
+        "reload": "Reload arena",
+        "type": "Type",
+        "multiplier": "Attack multiplier",
+        "playerTurnMsg": "What will {{ name }} do?",
+        "enemyTurnMsg": "{{ name }}'s turn to attack!",
+        "battleResultWon": "You won!",
+        "battleResultLost": "You lost..."
+    }
+}

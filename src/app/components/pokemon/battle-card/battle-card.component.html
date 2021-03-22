@@ -1,0 +1,17 @@
+<div class="card" [ngClass]="{'blue': type === 'blue', 'attacked': pokemon.attacked}">
+    <p class="title" [innerHtml]="title" *ngIf="title"></p>
+    <div class="pokemon-data" *ngIf="pokemon">
+        <div class="pokemon-data--name">
+            <span [innerHtml]="pokemon.name"></span>
+            <span class="info" (mouseover)="infoModal = true" (mouseout)="infoModal = false">i</span>
+            <div class="info-modal" *ngIf="infoModal">
+                <p>{{ 'ARENA.type' | translate }}: {{ pokemon.type }}</p>
+                <p>{{ 'ARENA.multiplier' | translate }}: {{ pokemon.attackMultiplier }}</p>
+            </div>
+        </div>
+        <p class="pokemon-data--hp" [innerHtml]="'HP: ' + pokemon.hp"></p>
+    </div>
+    <div class="pokemon-visual">
+        <img [src]="pokemon.image" [alt]="pokemon.name">
+    </div>
+</div>

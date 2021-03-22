@@ -1,0 +1,43 @@
+.pgr-item {
+    .inner {
+        background-color: azure;
+        display: block;
+        padding-bottom: 10px;
+    }
+    span {
+        display: block;
+        font-size: 20px;
+        color: gray;
+    }
+
+    &:hover {
+        .inner {
+            background-color: lavender;
+        }
+    }
+}
+
+.pokemon-actions {
+    margin-top: 10px;
+
+    .actions {
+        padding: 10px;
+
+        p {
+            margin: 5px 0;
+
+            &.waiting {
+                text-align: right;
+            }
+        }
+
+        .single-action {
+            width: 100%;
+        }
+    }
+}
+
+.restart-arena {
+    margin-top: 50px;
+    text-align: center;
+}

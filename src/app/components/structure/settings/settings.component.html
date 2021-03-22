@@ -1,0 +1,66 @@
+<h1>{{ 'SETTINGS.title' | translate }}</h1>
+<form #settingsForm="ngForm" class="form">
+    <div class="form-item">
+        <label for="player">{{ 'SETTINGS.player' | translate }}: </label>
+        <input type="text" name="player" required
+            #player="ngModel" 
+            [(ngModel)]="form.player"
+            [ngClass]="{'invalid': player.invalid && (player.dirty || player.touched)}"
+            *ngIf="mode == 'page'; else modeModal"
+            >
+        <ng-template #modeModal>
+            <span [innerHtml]="form.player"></span>
+        </ng-template>
+    </div>
+    <div class="form-item">
+        <label for="lang">{{ 'SETTINGS.lang' | translate }}: </label>
+        <select name="lang" id="" required
+            #lang="ngModel"
+            [(ngModel)]="form.lang"
+            [ngClass]="{'invalid': lang.invalid && (lang.dirty || lang.touched)}"
+            (ngModelChange)="optionChange($event, lang.name)"
+            >
+            <option 
+                *ngFor="let lang of options.langs | keyvalue; let i = index" 
+                [value]="lang.key"
+                >
+                {{ '' + lang.value + '' | translate }}
+            </option>
+        </select>
+    </div>
+    <div class="form-item">
+        <label for="theme">{{ 'SETTINGS.theme' | translate }}: </label>
+        <select name="theme" id="" required
+            #theme="ngModel"
+            [(ngModel)]="form.theme" 
+            [ngClass]="{'invalid': theme.invalid && (theme.dirty || theme.touched)}"
+            (ngModelChange)="optionChange($event, theme.name)"
+            >
+            <option 
+                *ngFor="let theme of options.themes | keyvalue; let i = index" 
+                [value]="theme.key"
+                >
+                {{ '' + theme.value + '' | translate }}
+            </option>
+        </select>
+    </div>
+    <div class="form-item">
+        <label for="render">{{ 'SETTINGS.render' | translate }}: </label>
+        <select name="render" id="" required
+            #render="ngModel"
+            [(ngModel)]="form.render"
+            [ngClass]="{'invalid': render.invalid && (render.dirty || render.touched)}"
+            (ngModelChange)="optionChange($event, render.name)"
+            >
+            <option 
+                *ngFor="let render of options.renders | keyvalue; let i = index"
+                [value]="render.key"
+                >
+                {{ '' + render.value + '' | translate }}
+            </option>
+        </select>
+    </div>
+    <div>
+        <app-ui-button [text]="'SETTINGS.button' | translate" (emitter)="submit()" [disabled]="settingsForm.invalid"></app-ui-button>
+    </div>
+</form>

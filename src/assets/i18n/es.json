@@ -1,0 +1,38 @@
+{
+    "HEADER": {
+        "settings": "Preferencias",
+        "signOut": "Salir"
+    },
+    "SETTINGS": {
+        "title": "Preferencias",
+        "player": "Jugador",
+        "lang": "Idioma",
+        "theme": "Tema",
+        "render": "Render",
+        "LANG_OPTIONS": {
+            "en": "English",
+            "es": "Español"
+        },
+        "THEME_OPTIONS": {
+            "light": "Claro",
+            "dark": "Oscuro"
+        },
+        "RENDER_OPTIONS": {
+            "html": "HTML",
+            "canvas": "Canvas"
+        },
+        "button": "Guardar"
+    },
+    "ARENA": {
+        "title": "Arena de batalla",
+        "progressStage0": "Cargando Pokemons...",
+        "progressStage1": "Elige tu Pokemon",
+        "reload": "Reiniciar arena",
+        "type": "Tipo",
+        "multiplier": "Multiplicador de ataque",
+        "playerTurnMsg": "¿Qué va a hacer {{ name }}?",
+        "enemyTurnMsg": "¡Es el turno de {{ name }} para atacar!",
+        "battleResultWon": "¡Has ganado!",
+        "battleResultLost": "Has perdido..."
+    }
+}
