@@ -1,6 +1,6 @@
 <div class="view page">
     <h1>{{ 'ARENA.title' | translate }}</h1>
-    <p *ngIf="progressStage == 0">{{ 'ARENA.progressStage0' | translate}}</p>
+    <p *ngIf="progressStage == 0" class="themed">{{ 'ARENA.progressStage0' | translate}}</p>
     
     <div class="pokemon-selection" *ngIf="progressStage == 1">
         <h2>{{ 'ARENA.progressStage1' | translate }}</h2>
