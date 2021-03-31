@@ -9,24 +9,29 @@ import { BattleResultComponent } from './pokemon/battle-result/battle-result.com
 import { SettingsComponent } from './structure/settings/settings.component';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from './structure/header/header.component';
-
+import { UiTableComponent } from './ui/ui-table/ui-table.component';
+import { RankingsComponent } from './structure/rankings/rankings.component';
 
 @NgModule({
   declarations: [
     UiButtonComponent,
-    BattleCardComponent,
     UiModalComponent,
+    UiTableComponent,
+    BattleCardComponent,
     BattleResultComponent,
     SettingsComponent,
-    HeaderComponent
+    HeaderComponent,
+    RankingsComponent
   ],
   exports: [
     UiButtonComponent,
-    BattleCardComponent,
     UiModalComponent,
+    UiTableComponent,
+    BattleCardComponent,
     BattleResultComponent,
     SettingsComponent,
-    HeaderComponent
+    HeaderComponent,
+    RankingsComponent
   ],
   imports: [
     CommonModule,

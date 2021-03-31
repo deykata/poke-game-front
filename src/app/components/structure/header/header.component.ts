@@ -8,7 +8,9 @@ import { StorageService } from 'src/app/shared/services/storage.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  public showModal: boolean;
   public showSettings: boolean;
+  public showRankings: boolean;
 
   constructor(
     private storage: StorageService,
@@ -18,8 +20,22 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  toggleSettings() {
-    this.showSettings = !this.showSettings;
+  toggleModal(type) {
+    this.showModal = !this.showModal;
+    switch (type) {
+      case 'settings':
+        this.showSettings = !this.showSettings;
+        break;
+      case 'rankings':
+        this.showRankings = !this.showRankings;
+        break;
+    
+      default:
+        this.showRankings = null;
+        this.showSettings = null;
+        this.showModal = false;
+        break;
+    }
   }
 
   signOut() {

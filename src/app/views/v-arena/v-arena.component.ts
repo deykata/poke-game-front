@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ApiPokeService } from 'src/app/shared/services/api-poke.service';
 import { take } from 'rxjs/operators';
 import { StorageService } from 'src/app/shared/services/storage.service';
@@ -6,6 +6,8 @@ import { SelectedPokemon } from 'src/app/shared/models/selected-pokemon';
 import { StoreConfig } from 'src/app/config/config';
 import { Settings } from 'src/app/shared/models/settings';
 import { RandomTypeArrayTypes, UtilsService } from 'src/app/shared/services/utils.service';
+import { BattleType, NewBattleRequest } from 'src/app/shared/models/battle-type';
+import { BattleService } from 'src/app/shared/services/battle.service';
 
 @Component({
   selector: 'app-v-arena',
@@ -13,6 +15,8 @@ import { RandomTypeArrayTypes, UtilsService } from 'src/app/shared/services/util
   styleUrls: ['./v-arena.component.scss']
 })
 export class VArenaComponent implements OnInit {
+  public battleTypes: BattleType[] = [];
+  private selectedBattleType: number;
   private pokemonCount: number;
   private selectedPokemonIds: number[] = [];
   public selectedPokemons: any[] = [];
@@ -21,7 +25,7 @@ export class VArenaComponent implements OnInit {
   public playerPokemon: SelectedPokemon = {} as SelectedPokemon;
   public enemyPokemon: SelectedPokemon = {} as SelectedPokemon;
 
-  public progressStage: number = 0;
+  public progressStage: number = -1;
 
   public playerTurn: boolean;
   public showModal: boolean;
@@ -29,20 +33,41 @@ export class VArenaComponent implements OnInit {
   constructor(
     private pokeApi: ApiPokeService,
     private storage: StorageService,
-    private utils: UtilsService
+    private utils: UtilsService,
+    private battleService: BattleService
   ) {}
 
+  @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
+    if (this.progressStage > 1) {
+      event.returnValue = false; // stay on same page
+    }  
+    event.preventDefault();
+  }
+
   ngOnInit(): void {
+    this.loadBattleTypes();
     this.getUserData();
+  }
+
+  loadBattleTypes() {
+    this.battleService.getBattleTypes().toPromise().then(res => {
+      (res as any).types.forEach(type => {
+        const item = new BattleType(type.id, type.name, type.active, type.points);
+        this.battleTypes.push(item);
+      });
+    })
+  }
+
+  battleSelected(typeId) {
+    this.selectedBattleType = typeId;
     this.prepareArena();
   }
 
   restartArena() {
-    this.progressStage = 0;
+    this.progressStage = -1;
     this.selectedPokemons = [];
     this.selectedPokemonIds = [];
-    this.showModal = false;
-    this.prepareArena();
+    this.showModal = null;
   }
 
   getUserData() {
@@ -52,6 +77,7 @@ export class VArenaComponent implements OnInit {
   }
 
   prepareArena() {
+    this.progressStage = 0;
     this.pokeApi.getPokemonCount({limit: 1}).pipe(take(1)).subscribe(res => {
       this.pokemonCount = (res as any).count;
       this.selectedPokemonIds = this.utils.getRandomItems(850, 2, RandomTypeArrayTypes.Number);
@@ -149,6 +175,7 @@ export class VArenaComponent implements OnInit {
 
   applyDamage(pokemon: SelectedPokemon, attackData: any, attackMultiplier: number) {
     pokemon.hp = pokemon.hp - (attackData.power * attackMultiplier);
+    pokemon.damageTaken = pokemon.damageTaken + (attackData.power * attackMultiplier);
     pokemon.attacked = true;
     this.playerTurn = !this.playerTurn;
     setTimeout(() => {
@@ -179,10 +206,14 @@ export class VArenaComponent implements OnInit {
     }
   }
 
-  showResultModal() {
+  async showResultModal() {
     this.progressStage = 3;
     setTimeout(() => {
       this.showModal = !this.showModal;
     }, 500);
+    const payload = await new NewBattleRequest(this.player, this.selectedBattleType, this.enemyPokemon.damageTaken);
+    this.battleService.saveBattleResult(payload).toPromise().then(res => {
+      console.log('YES ', res);
+    })
   }
 }

@@ -8,6 +8,7 @@ import { StoreConfig } from 'src/app/config/config';
 import { Settings, SettingsOptions } from 'src/app/shared/models/settings';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { ThemeService } from 'src/app/shared/services/theme.service';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
   selector: 'app-settings',
@@ -27,7 +28,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private route: Router,
     private storage: StorageService,
     private translate: TranslateService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -61,9 +63,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.storage.getItem(this.storageKey).toPromise().then(res => {
       if (res) {
         this.form.player = res.player;
+        this.form.playerId = res.playerId;
         this.form.lang = res.lang;
         this.form.theme = res.theme;
-        this.themeService.setActiveTheme(this.form.theme);
         this.form.render = res.render;
       }
     })
@@ -84,8 +86,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
   }
 
-  submit() {
+  async submit() {
     if (this.settingsForm.invalid) return;
+    if (this.mode == 'page') {
+      const user = await this.userService.doCheckUser({user: this.form.player}).toPromise();
+      this.form.playerId = (user as any).userId;
+    }
     this.storage.saveItem(this.storageKey, this.form).subscribe(res => {
       if (this.mode == 'page') {
         this.route.navigateByUrl('arena');

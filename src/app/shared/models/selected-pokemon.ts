@@ -9,6 +9,7 @@ export class SelectedPokemon {
     moves: any;
     attacked: boolean;
     attackMultiplier: number;
+    damageTaken: number = 0;
 
     constructor(
         name: string,

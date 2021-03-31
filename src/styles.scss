@@ -4,6 +4,7 @@
     --background-light: #ffffff;
     --primary-yellow: #FFCB02;
     --primary-blue: #3D5AA6;
+    --secondary-blue: #3D5AA6;
     --text: #000000;
 }
 
@@ -50,7 +51,7 @@ h2 {
     color: var(--text);
 }
 
-p.themed {
+.themed {
     color: var(--text);
 }
 
@@ -157,5 +158,22 @@ p.themed {
 
     .invalid {
         border-color: red;
+    }
+
+}
+
+.radio-wrapper {
+    display: flex;
+
+    .radio-item {
+        margin-right: 15px;
+        label {
+            cursor: pointer;
+            color: var(--text);
+        }
+        input {
+            width: auto;
+            margin-right: 5px;
+        }
     }
 }

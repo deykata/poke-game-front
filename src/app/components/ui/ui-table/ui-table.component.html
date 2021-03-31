@@ -1,0 +1,12 @@
+<div class="table">
+    <div class="thead">
+        <ul>
+            <li *ngFor="let header of data.headers" [ngStyle]="{'flex': '1 0 ' + 100 / data.headers.length + '%'}">{{ header }}</li>
+        </ul>
+    </div>
+    <div class="tbody">
+        <ul *ngFor="let row of data.body">
+            <li *ngFor="let cell of row | keyvalue" [ngStyle]="{'flex': '1 0 ' + 100 / data.headers.length + '%', 'order': data.order.indexOf(cell.key)}">{{ cell.value }}</li>
+        </ul>
+    </div>
+</div>

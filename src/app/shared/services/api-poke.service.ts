@@ -18,11 +18,11 @@ export class ApiPokeService {
         finalParams = `${finalParams + key}=${params[key]}`;
       }
     }
-    return this.http.get(AppConfig.POKEMON_API_URL + AppConfig.POKEMON_FOLDER + finalParams);
+    return this.http.get(AppConfig.API_URL_POKEMON + AppConfig.P_POKEMON_FOLDER + finalParams);
   }
 
   getPokemonById(id: number) {
-    return this.http.get(AppConfig.POKEMON_API_URL + AppConfig.POKEMON_FOLDER + id);
+    return this.http.get(AppConfig.API_URL_POKEMON + AppConfig.P_POKEMON_FOLDER + '/' + id);
   }
 
   getPokemonMove(url: string) {
@@ -30,6 +30,6 @@ export class ApiPokeService {
   }
 
   getPokemonType(type: string) {
-    return this.http.get(AppConfig.POKEMON_API_URL + AppConfig.TYPES_FOLDER + type);
+    return this.http.get(AppConfig.API_URL_POKEMON + AppConfig.P_TYPES_FOLDER + '/' + type);
   }
 }

@@ -1,0 +1,36 @@
+.table {
+    .thead {
+        ul {
+            background-color: var(--primary-yellow);
+            border-bottom: none;
+        }
+    }
+    ul {
+        display: flex;
+        border-right: 1px solid var(--primary-blue);
+
+
+        &:first-of-type {
+            border-top: 1px solid var(--primary-blue);
+        }
+        &:last-of-type {
+            border-bottom: 1px solid var(--primary-blue);
+        }
+
+        &:nth-of-type(even) {
+            background-color: azure;
+        }
+
+        li {
+            border-left: 1px solid var(--primary-blue);
+            padding: 5px 10px;
+        }
+    }
+    .tbody {
+        ul:nth-of-type(odd) {
+            li {
+                color: var(--text);
+            }
+        }
+    }
+}

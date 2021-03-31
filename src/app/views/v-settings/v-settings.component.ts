@@ -6,6 +6,8 @@ import { Component, OnInit} from '@angular/core';
   styleUrls: ['./v-settings.component.scss']
 })
 export class VSettingsComponent implements OnInit {
+  
+
   constructor() {}
 
   ngOnInit() {}

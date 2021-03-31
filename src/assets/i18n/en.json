@@ -1,5 +1,6 @@
 {
     "HEADER": {
+        "rankings": "Rankings",
         "settings": "Settings",
         "signOut": "Sign out"
     },
@@ -25,6 +26,7 @@
     },
     "ARENA": {
         "title": "Battle arena",
+        "preStage": "Choose your battle",
         "progressStage0": "Loading Pokemons...",
         "progressStage1": "Choose your Pokemon",
         "reload": "Reload arena",
@@ -33,6 +35,10 @@
         "playerTurnMsg": "What will {{ name }} do?",
         "enemyTurnMsg": "{{ name }}'s turn to attack!",
         "battleResultWon": "You won!",
-        "battleResultLost": "You lost..."
+        "battleResultLost": "You lost...",
+        "comingSoon": "Coming soon!"
+    },
+    "RANKINGS": {
+        "title": "Rankings"
     }
 }

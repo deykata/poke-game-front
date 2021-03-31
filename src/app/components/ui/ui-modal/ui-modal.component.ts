@@ -7,6 +7,7 @@ import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, OnChange
 })
 export class UiModalComponent implements OnInit, OnChanges {
   @Input() trigger: boolean;
+  @Input() closable: boolean = true;
   @Output() close = new EventEmitter<boolean>();
   show: boolean = false;
 
@@ -17,7 +18,7 @@ export class UiModalComponent implements OnInit, OnChanges {
 
   ngOnChanges(change: SimpleChanges) {
     if (change.trigger.currentValue != change.trigger.previousValue) {
-      this.show = !this.show;
+      this.show = change.trigger.currentValue;
     }
   }
 

@@ -1,8 +1,13 @@
 <header class="view header">
-    <a href="javascript:void(0)" (click)="toggleSettings()">{{ 'HEADER.settings' | translate }}</a>
-    <a href="javascript:void(0)" (click)="signOut()">{{ 'HEADER.signOut' | translate }}</a>
+    <div class="logo"></div>
+    <ul class="menu">
+        <li><a href="javascript:void(0)" (click)="toggleModal('rankings')">{{ 'HEADER.rankings' | translate }}</a></li>
+        <li><a href="javascript:void(0)" (click)="toggleModal('settings')">{{ 'HEADER.settings' | translate }}</a></li>
+        <li><a href="javascript:void(0)" (click)="signOut()">{{ 'HEADER.signOut' | translate }}</a></li>
+    </ul>
 </header>
 
-<app-ui-modal [trigger]="showSettings">
-    <app-settings (saved)="toggleSettings()"></app-settings>
+<app-ui-modal [trigger]="showModal" (close)="toggleModal('modal')">
+    <app-settings (saved)="toggleModal('settings')" *ngIf="showSettings"></app-settings>
+    <app-rankings *ngIf="showRankings"></app-rankings>
 </app-ui-modal>

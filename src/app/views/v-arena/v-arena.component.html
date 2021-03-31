@@ -1,5 +1,16 @@
+<app-header></app-header>
 <div class="view page">
-    <h1>{{ 'ARENA.title' | translate }}</h1>
+    <div class="battle-selection" *ngIf="progressStage == -1">
+        <h1>{{ 'ARENA.preStage' | translate}}</h1>
+        <ul>
+            <li *ngFor="let type of battleTypes">
+                <app-ui-button [text]="type.name" (emitter)="battleSelected(type.id)" [disabled]="!type.active"></app-ui-button>
+                <span *ngIf="!type.active" class="themed"> <- {{ 'ARENA.comingSoon' | translate }}</span>
+            </li>
+        </ul>
+    </div>
+
+    <h1 *ngIf="progressStage > 0">{{ 'ARENA.title' | translate }}</h1>
     <p *ngIf="progressStage == 0" class="themed">{{ 'ARENA.progressStage0' | translate}}</p>
     
     <div class="pokemon-selection" *ngIf="progressStage == 1">
@@ -47,12 +58,12 @@
         </div>
     </div>
 
-    <div class="restart-arena" *ngIf="progressStage != 0">
+    <div class="restart-arena" *ngIf="progressStage == 1">
         <app-ui-button [text]="'ARENA.reload' | translate" (emitter)="restartArena()"></app-ui-button>
     </div>
 </div>
 
-<app-ui-modal [trigger]="showModal">
+<app-ui-modal [trigger]="showModal" [closable]=false>
     <app-battle-result [result]="playerPokemon.hp > 0 ? true : false">
         <app-ui-button [text]="'ARENA.reload' | translate" (emitter)="restartArena()"></app-ui-button>
     </app-battle-result>

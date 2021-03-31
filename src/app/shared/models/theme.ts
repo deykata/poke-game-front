@@ -9,7 +9,8 @@ export const light: Theme = {
         "--background-light": "#ffffff",
         "--primary-yellow": "#FFCB02",
         "--primary-blue": "#3D5AA6",
-        "--text": "#000000"
+        "--secondary-blue": "#3D5AA6",
+        "--text": "#000000",
     }
 };
 
@@ -19,6 +20,7 @@ export const dark: Theme = {
         "--background-light": "#1a1d2b",
         "--primary-yellow": "#FFCB02",
         "--primary-blue": "#3D5AA6",
+        "--secondary-blue": "#ffffff",
         "--text": "#ffffff"
     }
 };

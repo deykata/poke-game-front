@@ -1,4 +1,5 @@
 export interface Settings {
+    playerId?: number;
     player: string;
     lang: string;
     theme: string;

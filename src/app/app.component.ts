@@ -4,6 +4,7 @@ import { take } from 'rxjs/operators';
 import { StoreConfig } from './config/config';
 import { StorageService } from './shared/services/storage.service';
 import * as Realm from "realm-web";
+import { ThemeService } from './shared/services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,8 @@ export class AppComponent implements OnInit {
   
   constructor(
     private storage: StorageService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private themeService: ThemeService,
   ) {}
 
   ngOnInit() {
@@ -32,6 +34,7 @@ export class AppComponent implements OnInit {
       const lang = res && res.lang ? res.lang : this.translate.getBrowserLang().includes('en') ? 'en' : 'es';
       this.translate.use(lang);
       this.translate.setDefaultLang(lang);
+      this.themeService.setActiveTheme(res.theme);
     })
   }
 }
