@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from './structure/header/header.component';
 import { UiTableComponent } from './ui/ui-table/ui-table.component';
 import { RankingsComponent } from './structure/rankings/rankings.component';
+import { OnlineRoomComponent } from './pokemon/online-room/online-room.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { RankingsComponent } from './structure/rankings/rankings.component';
     BattleResultComponent,
     SettingsComponent,
     HeaderComponent,
-    RankingsComponent
+    RankingsComponent,
+    OnlineRoomComponent
   ],
   exports: [
     UiButtonComponent,
@@ -31,7 +33,8 @@ import { RankingsComponent } from './structure/rankings/rankings.component';
     BattleResultComponent,
     SettingsComponent,
     HeaderComponent,
-    RankingsComponent
+    RankingsComponent,
+    OnlineRoomComponent
   ],
   imports: [
     CommonModule,

@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 import { StoreConfig } from 'src/app/config/config';
 import { Settings } from 'src/app/shared/models/settings';
 import { TableData } from 'src/app/shared/models/table-data';
@@ -10,7 +13,8 @@ import { StorageService } from 'src/app/shared/services/storage.service';
   templateUrl: './rankings.component.html',
   styleUrls: ['./rankings.component.scss']
 })
-export class RankingsComponent implements OnInit {
+export class RankingsComponent implements OnInit, OnDestroy {
+  private readonly ngUnsubscribe = new Subject();
   public rankingData: TableData = {} as TableData;
   public rankingLimit: number = 10;
   public selectedType: string;
@@ -32,12 +36,25 @@ export class RankingsComponent implements OnInit {
 
   constructor(
     private rankingService: RankingService,
-    private storage: StorageService
+    private storage: StorageService,
+    private translate: TranslateService,
   ) { }
 
   ngOnInit(): void {
     this.selectedType = this.rankingTypes[0].type;
     this.getUserData();
+  }
+
+  subscribeToTranslations() {
+    this.translate.onLangChange.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      this.getTranslations();
+    })
+  }
+
+  getTranslations() {
+    this.translate.get('RANKINGS').pipe(take(1)).subscribe(res => {
+      this.rankingData.headers = [res.position,res.player,res.points];
+    })
   }
 
   getUserData() {
@@ -49,10 +66,14 @@ export class RankingsComponent implements OnInit {
 
   getRanking() {
     this.rankingService.getRanking(this.selectedType, this.rankingLimit, this.playerId).toPromise().then(res => {
-      this.rankingData.headers = ['Position','Player','Points'];
+      this.getTranslations();
       this.rankingData.body = (res as any).rankings;
       this.rankingData.order = ['position','player','points'];
     })
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.unsubscribe();
   }
 
 }

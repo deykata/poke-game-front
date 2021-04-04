@@ -4,11 +4,13 @@
         <h1>{{ 'ARENA.preStage' | translate}}</h1>
         <ul>
             <li *ngFor="let type of battleTypes">
-                <app-ui-button [text]="type.name" (emitter)="battleSelected(type.id)" [disabled]="!type.active"></app-ui-button>
+                <app-ui-button [text]="type.name" (emitter)="battleSelected(type)" [disabled]="!type.active"></app-ui-button>
                 <span *ngIf="!type.active" class="themed"> <- {{ 'ARENA.comingSoon' | translate }}</span>
             </li>
         </ul>
     </div>
+
+    <app-online-room *ngIf="progressStage == null"></app-online-room>
 
     <h1 *ngIf="progressStage > 0">{{ 'ARENA.title' | translate }}</h1>
     <p *ngIf="progressStage == 0" class="themed">{{ 'ARENA.progressStage0' | translate}}</p>
@@ -44,8 +46,8 @@
         <div class="card">
             <div class="actions">
                 <div class="grid" *ngIf="playerTurn; else playerWaiting">
-                    <p class="grid--item col6" [innerHTML]="'ARENA.playerTurnMsg' | translate: {name: playerPokemon.name}"></p>
-                    <ul class="grid--item col6 grid">
+                    <p class="grid--item col6 mob-col12" [innerHTML]="'ARENA.playerTurnMsg' | translate: {name: playerPokemon.name}"></p>
+                    <ul class="grid--item col6 mob-col12 grid">
                         <li class="grid--item col6" *ngFor="let attack of playerPokemon.attacks; let i = index;">
                             <app-ui-button [text]="attack.move.name" (emitter)="launchAttack(i, attack, 'player')" [full]="true"></app-ui-button>
                         </li>

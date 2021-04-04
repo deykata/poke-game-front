@@ -8,6 +8,7 @@ import { Settings } from 'src/app/shared/models/settings';
 import { RandomTypeArrayTypes, UtilsService } from 'src/app/shared/services/utils.service';
 import { BattleType, NewBattleRequest } from 'src/app/shared/models/battle-type';
 import { BattleService } from 'src/app/shared/services/battle.service';
+import { PokemonHelper } from './helpers/pokemon.helper';
 
 @Component({
   selector: 'app-v-arena',
@@ -34,7 +35,8 @@ export class VArenaComponent implements OnInit {
     private pokeApi: ApiPokeService,
     private storage: StorageService,
     private utils: UtilsService,
-    private battleService: BattleService
+    private battleService: BattleService,
+    private pokemonHelper: PokemonHelper
   ) {}
 
   @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
@@ -52,15 +54,32 @@ export class VArenaComponent implements OnInit {
   loadBattleTypes() {
     this.battleService.getBattleTypes().toPromise().then(res => {
       (res as any).types.forEach(type => {
-        const item = new BattleType(type.id, type.name, type.active, type.points);
+        const item = new BattleType(type.id, type.name, type.active, type.points, type.type);
         this.battleTypes.push(item);
       });
     })
   }
 
-  battleSelected(typeId) {
-    this.selectedBattleType = typeId;
-    this.prepareArena();
+  getUserData() {
+    this.storage.getItem(StoreConfig.DB_SETTINGS).toPromise().then((res: Settings) => {
+      this.player = res.player;
+    })
+  }
+
+  battleSelected(type) {
+    this.selectedBattleType = type.id;
+    switch (type.type) {
+      case 'solo':
+        this.prepareArena();
+        break;
+      case 'online':
+        console.log(type)
+        this.progressStage = null;
+        break;
+    
+      default:
+        break;
+    }
   }
 
   restartArena() {
@@ -68,12 +87,6 @@ export class VArenaComponent implements OnInit {
     this.selectedPokemons = [];
     this.selectedPokemonIds = [];
     this.showModal = null;
-  }
-
-  getUserData() {
-    this.storage.getItem(StoreConfig.DB_SETTINGS).toPromise().then((res: Settings) => {
-      this.player = res.player;
-    })
   }
 
   prepareArena() {
@@ -92,9 +105,10 @@ export class VArenaComponent implements OnInit {
     })
     Promise.all(promiseArray.map((task: () => any) => task()))
       .then(res => {
-        res.forEach((pokemon: any) => {
+        res.forEach(async (pokemon: any) => {
           if (pokemon.moves.length) {
-            this.mapPokemon(pokemon);
+            const mappedPokemon = await this.pokemonHelper.mapPokemon(pokemon);
+            this.selectedPokemons.push(mappedPokemon);
           } else {
             this.getNewPokemon();
           }
@@ -105,54 +119,21 @@ export class VArenaComponent implements OnInit {
 
   getNewPokemon() {
     const newId = this.utils.getRandomItems(850, 1, RandomTypeArrayTypes.Number)[0] + 1;
-    this.pokeApi.getPokemonById(newId).toPromise().then((newPokemon: any) => {
+    this.pokeApi.getPokemonById(newId).toPromise().then(async (newPokemon: any) => {
       if (newPokemon.moves.length) {
-        this.mapPokemon(newPokemon);
+        const mappedPokemon = await this.pokemonHelper.mapPokemon(newPokemon);
+        this.selectedPokemons.push(mappedPokemon);
       } else {
         this.getNewPokemon();
       }
     })
   }
 
-  async mapPokemon(pokemon) {
-    const pokemonAttacks = this.utils.getRandomItems(pokemon.moves, 4, RandomTypeArrayTypes.Object);
-    const pokemonMoves = this.utils.filterArrays(pokemon.moves, pokemonAttacks);
-    const pokemonType = pokemon.types[0].type.name;
-    const typeRelations = await this.pokeApi.getPokemonType(pokemonType).toPromise();
-    const mappedPokemon = new SelectedPokemon(pokemon.name, pokemon.stats[0].base_stat, pokemon.stats[2].base_stat, pokemon.sprites.other['official-artwork'].front_default, pokemonType, typeRelations, pokemonAttacks, pokemonMoves);
-    this.selectedPokemons.push(mappedPokemon);
-  }
-
-  getAttackMultiplier(typeRelations, attackingType) {
-    let attackMultiplier = 1;
-    for (const [key, value] of Object.entries(typeRelations)) {
-      (value as any).forEach(type => {
-        if (type.name === attackingType) {
-          switch (key) {
-            case 'doubleDamageFrom':
-              attackMultiplier = 2;
-              break;
-            case 'halfDamageFrom':
-              attackMultiplier = .5;
-              break;
-            case 'noDamageFrom':
-              attackMultiplier = 0;
-              break;
-            default:
-              break;
-          }
-        }
-      });
-    }
-
-    return attackMultiplier;
-  }
-
   selectPokemon(index: number) {
     this.playerPokemon = this.selectedPokemons[index];
     this.enemyPokemon = this.selectedPokemons.find((_pokemon, i) => i != index);
-    this.playerPokemon.attackMultiplier = this.getAttackMultiplier(this.playerPokemon.typeRelations, this.enemyPokemon.type);
-    this.enemyPokemon.attackMultiplier = this.getAttackMultiplier(this.enemyPokemon.typeRelations, this.playerPokemon.type);
+    this.playerPokemon.attackMultiplier = this.pokemonHelper.getAttackMultiplier(this.playerPokemon.typeRelations, this.enemyPokemon.type);
+    this.enemyPokemon.attackMultiplier = this.pokemonHelper.getAttackMultiplier(this.enemyPokemon.typeRelations, this.playerPokemon.type);
     this.startBattle();
   }
 
@@ -170,7 +151,7 @@ export class VArenaComponent implements OnInit {
       defending = this.playerPokemon;
     }
     this.applyDamage(defending, attackData, attacking.attackMultiplier);
-    attacking = this.addNewAttack(attacking, index);
+    attacking = this.pokemonHelper.addNewAttack(attacking, index);
   }
 
   applyDamage(pokemon: SelectedPokemon, attackData: any, attackMultiplier: number) {
@@ -186,14 +167,6 @@ export class VArenaComponent implements OnInit {
     } else {
       this.checkTurn();
     }
-  }
-
-  addNewAttack(pokemon: SelectedPokemon, index: number) {
-    pokemon.attacks = pokemon.attacks.filter((_att, i) => i != index); 
-    const newAttack = this.utils.getRandomItems(pokemon.moves, 1, RandomTypeArrayTypes.Object);
-    pokemon.attacks = [...pokemon.attacks, ...newAttack];
-    pokemon.moves = this.utils.filterArrays(pokemon.moves, pokemon.attacks);
-    return pokemon;
   }
 
   checkTurn() {

@@ -16,9 +16,12 @@
     width: 90%;
     max-width: 600px;
     position: fixed;
+    z-index: 110;
     top: 10%;
     left: 50%;
     transform: translateX(-50%);
+    max-height: 80%;
+    overflow: auto;
 
     .close-btn {
         position: absolute;

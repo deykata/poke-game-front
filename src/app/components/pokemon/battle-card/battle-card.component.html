@@ -5,8 +5,8 @@
             <span [innerHtml]="pokemon.name"></span>
             <span class="info" (mouseover)="infoModal = true" (mouseout)="infoModal = false">i</span>
             <div class="info-modal" *ngIf="infoModal">
-                <p>{{ 'ARENA.type' | translate }}: {{ pokemon.type }}</p>
-                <p>{{ 'ARENA.multiplier' | translate }}: {{ pokemon.attackMultiplier }}</p>
+                <p class="themed">{{ 'ARENA.type' | translate }}: {{ pokemon.type }}</p>
+                <p class="themed">{{ 'ARENA.multiplier' | translate }}: {{ pokemon.attackMultiplier }}</p>
             </div>
         </div>
         <p class="pokemon-data--hp" [innerHtml]="'HP: ' + pokemon.hp"></p>

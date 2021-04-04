@@ -39,6 +39,12 @@
         "comingSoon": "¡Próximamente!"
     },
     "RANKINGS": {
-        "title": "Clasificaciones"
+        "title": "Clasificaciones",
+        "combined": "Combinados",
+        "player": "Jugador",
+        "battle": "Batalla",
+        "position": "Posición",
+        "points": "Puntos",
+        "limitTxt": "Filas para mostrar:"
     }
 }

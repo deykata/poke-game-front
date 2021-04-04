@@ -3,12 +3,14 @@ export class BattleType {
     name: string;
     active: boolean;
     points: number;
+    type: string;
 
-    constructor (id: number, name: string, active: boolean, points: number) {
+    constructor (id: number, name: string, active: boolean, points: number, type: string) {
         this.id = id;
         this.name = name;
         this.active = active;
         this.points = points;
+        this.type = type;
     }
 }
 

@@ -39,6 +39,12 @@
         "comingSoon": "Coming soon!"
     },
     "RANKINGS": {
-        "title": "Rankings"
+        "title": "Rankings",
+        "combined": "Combined",
+        "player": "Player",
+        "battle": "Battle",
+        "position": "Position",
+        "points": "Points",
+        "limitTxt": "Rows to show:"
     }
 }

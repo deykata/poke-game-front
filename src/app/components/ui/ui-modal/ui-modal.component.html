@@ -1,6 +1,5 @@
-<div class="bg" *ngIf="show">
-    <div class="modal">
-        <button class="close-btn" (click)="closeModal()" *ngIf="closable">+</button>
-        <ng-content></ng-content>
-    </div>
+<div class="bg" *ngIf="show" (click)="closeModal()"></div>
+<div class="modal" *ngIf="show">
+    <button class="close-btn" (click)="closeModal()" *ngIf="closable">+</button>
+    <ng-content></ng-content>
 </div>

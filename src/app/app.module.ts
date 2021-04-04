@@ -1,19 +1,23 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { AppConfig } from './config/config';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StoreConfig } from './config/config';
 
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { LocalForageModule } from 'ngx-localforage';
 import { ComponentsModule } from './components/components.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
+
+const wsConfig: SocketIoConfig = { url: AppConfig.WS_URL, options: {} };
 
 @NgModule({
   declarations: [
@@ -31,7 +35,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         }
     }),
     LocalForageModule.forRoot(),
-    ComponentsModule
+    ComponentsModule,
+    // SocketIoModule.forRoot(wsConfig)
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -2,12 +2,12 @@
 <div class="radio-wrapper">
     <span *ngFor="let option of rankingTypes;" class="radio-item">
         <label [for]="option.name">
-            <input type="radio" [value]="option.type" [(ngModel)]="selectedType" [name]="option.name" [id]="option.name" (ngModelChange)="getRanking()">{{option.name}}
+            <input type="radio" [value]="option.type" [(ngModel)]="selectedType" [name]="option.name" [id]="option.name" (ngModelChange)="getRanking()">{{ 'RANKINGS.' + option.name.toLowerCase() | translate }}
         </label>
     </span>
 </div>
 <div class="form-item limit">
-    <label for="limit">Rows to show: </label>
+    <label for="limit">{{ 'RANKINGS.limitTxt' | translate }} </label>
     <select name="limit" id="" [(ngModel)]="rankingLimit" (ngModelChange)="getRanking()">
         <option value=10>10</option>
         <option value=20>20</option>

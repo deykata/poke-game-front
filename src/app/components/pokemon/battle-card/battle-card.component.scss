@@ -1,8 +1,14 @@
+$phone: '(max-width: 500px)';
 .pokemon-data {
     display: flex;
     justify-content: space-between;
     padding: 15px;
     font-weight: 600;
+
+    @media #{$phone} {
+        display: block;
+        text-align: left;
+    }
 
     &--name {
         position: relative;
@@ -24,6 +30,11 @@
     padding: 10px 15px;
     width: 200px;
     text-align: left;
+    @media #{$phone} {
+        width: 100%;
+        left: 0;
+        top: 110%;
+    }
 
     p {
         font-size: 14px;
@@ -43,6 +54,7 @@
 
 .info {
     display: inline-block;
+    text-align: center;
     width: 18px;
     height: 18px;
     border: 2px solid gray;
