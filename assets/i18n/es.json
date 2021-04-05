@@ -1,5 +1,6 @@
 {
     "HEADER": {
+        "rankings": "Clasificaciones",
         "settings": "Preferencias",
         "signOut": "Salir"
     },
@@ -25,6 +26,7 @@
     },
     "ARENA": {
         "title": "Arena de batalla",
+        "preStage": "Elige tu batalla",
         "progressStage0": "Cargando Pokemons...",
         "progressStage1": "Elige tu Pokemon",
         "reload": "Reiniciar arena",
@@ -33,6 +35,19 @@
         "playerTurnMsg": "¿Qué va a hacer {{ name }}?",
         "enemyTurnMsg": "¡Es el turno de {{ name }} para atacar!",
         "battleResultWon": "¡Has ganado!",
-        "battleResultLost": "Has perdido..."
+        "battleResultLost": "Has perdido...",
+        "comingSoon": "¡Próximamente!",
+        "waitingOpponent": "Esperando al contrincante...",
+        "onlineRoom": "Jugadores online disponibles:",
+        "onlineRoomNone": "No hay jugadores disponibles en este momento..."
+    },
+    "RANKINGS": {
+        "title": "Clasificaciones",
+        "combined": "Combinados",
+        "player": "Jugador",
+        "battle": "Batalla",
+        "position": "Posición",
+        "points": "Puntos",
+        "limitTxt": "Filas para mostrar:"
     }
 }
