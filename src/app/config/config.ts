@@ -1,8 +1,8 @@
 export class AppConfig {
     // API BASE URLS
     public static API_URL_POKEMON = "https://pokeapi.co/api/v2";
-    public static API_URL_WRAPPER = "http://localhost:8080/wrapper-poke";
-    public static WS_URL = "ws://localhost:4444";
+    public static API_URL_WRAPPER = "https://deyo-poke.herokuapp.com/wrapper-poke";
+    public static WS_URL = "wss://deyo-poke.herokuapp.com";
 
     // POKEMON FOLDERS
     public static P_POKEMON_FOLDER = "/pokemon";
