@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppConfig } from './config/config';
+import { environment } from 'src/environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,7 +17,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
 
-const wsConfig: SocketIoConfig = { url: AppConfig.WS_URL, options: {} };
+const wsConfig: SocketIoConfig = { url: environment.WS_URL, options: {} };
 
 @NgModule({
   declarations: [

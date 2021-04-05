@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppConfig } from 'src/app/config/config';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,8 @@ export class RankingService {
         endpoint = AppConfig.W_RANKINGS_COMBINED;
         break;
     }
-    return AppConfig.API_URL_WRAPPER + AppConfig.W_RANKINGS_BASE + endpoint;
+    
+    return environment.API_URL_WRAPPER + AppConfig.W_RANKINGS_BASE + endpoint;
   }
 
   getRanking(type, limit, userId) {
