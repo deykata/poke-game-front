@@ -44,7 +44,7 @@
             </option>
         </select>
     </div>
-    <div class="form-item">
+    <!-- <div class="form-item">
         <label for="render">{{ 'SETTINGS.render' | translate }}: </label>
         <select name="render" id="" required
             #render="ngModel"
@@ -59,7 +59,7 @@
                 {{ '' + render.value + '' | translate }}
             </option>
         </select>
-    </div>
+    </div> -->
     <div>
         <app-ui-button [text]="'SETTINGS.button' | translate" (emitter)="submit()" [disabled]="settingsForm.invalid"></app-ui-button>
     </div>

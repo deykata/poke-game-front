@@ -23,6 +23,7 @@ export class UiModalComponent implements OnInit, OnChanges {
   }
 
   closeModal() {
+    if (!this.closable) return;
     this.show = false;
     this.close.emit(true);
   }

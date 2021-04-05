@@ -36,7 +36,7 @@ const wsConfig: SocketIoConfig = { url: AppConfig.WS_URL, options: {} };
     }),
     LocalForageModule.forRoot(),
     ComponentsModule,
-    // SocketIoModule.forRoot(wsConfig)
+    SocketIoModule.forRoot(wsConfig)
   ],
   providers: [],
   bootstrap: [AppComponent]

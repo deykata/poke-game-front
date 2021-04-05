@@ -36,7 +36,10 @@
         "enemyTurnMsg": "{{ name }}'s turn to attack!",
         "battleResultWon": "You won!",
         "battleResultLost": "You lost...",
-        "comingSoon": "Coming soon!"
+        "comingSoon": "Coming soon!",
+        "waitingOpponent": "Waiting for opponent...",
+        "onlineRoom": "Available online players:",
+        "onlineRoomNone": "There are no available players at the moment..."
     },
     "RANKINGS": {
         "title": "Rankings",

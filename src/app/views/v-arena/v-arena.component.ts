@@ -9,6 +9,7 @@ import { RandomTypeArrayTypes, UtilsService } from 'src/app/shared/services/util
 import { BattleType, NewBattleRequest } from 'src/app/shared/models/battle-type';
 import { BattleService } from 'src/app/shared/services/battle.service';
 import { PokemonHelper } from './helpers/pokemon.helper';
+import { OnlineService } from 'src/app/shared/services/online.service';
 
 @Component({
   selector: 'app-v-arena',
@@ -17,7 +18,7 @@ import { PokemonHelper } from './helpers/pokemon.helper';
 })
 export class VArenaComponent implements OnInit {
   public battleTypes: BattleType[] = [];
-  private selectedBattleType: number;
+  public selectedBattleType: any;
   private pokemonCount: number;
   private selectedPokemonIds: number[] = [];
   public selectedPokemons: any[] = [];
@@ -30,13 +31,23 @@ export class VArenaComponent implements OnInit {
 
   public playerTurn: boolean;
   public showModal: boolean;
+  public battleSocket: string;
+  public opponentWaiting: boolean = false;
+  private onlineBattle = {
+    startingPlayer: null,
+    enemyPokemon: null,
+    enemyName: null,
+    attackData: null
+  }
+  public enemyName: string;
 
   constructor(
     private pokeApi: ApiPokeService,
     private storage: StorageService,
     private utils: UtilsService,
     private battleService: BattleService,
-    private pokemonHelper: PokemonHelper
+    private pokemonHelper: PokemonHelper,
+    private onlineService: OnlineService
   ) {}
 
   @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
@@ -67,19 +78,25 @@ export class VArenaComponent implements OnInit {
   }
 
   battleSelected(type) {
-    this.selectedBattleType = type.id;
-    switch (type.type) {
+    this.selectedBattleType = type;
+    switch (this.selectedBattleType.type) {
       case 'solo':
         this.prepareArena();
         break;
       case 'online':
-        console.log(type)
         this.progressStage = null;
+        this.subscribeToBattle();
         break;
     
       default:
         break;
     }
+  }
+
+  prepareOnlineBattle(socket: string) {
+    console.log('me', socket)
+    this.battleSocket = socket;
+    this.prepareArena();
   }
 
   restartArena() {
@@ -115,6 +132,9 @@ export class VArenaComponent implements OnInit {
         })
         this.progressStage = 1;
       })
+      .catch(err => {
+        this.getNewPokemon();
+      })
   }
 
   getNewPokemon() {
@@ -123,6 +143,7 @@ export class VArenaComponent implements OnInit {
       if (newPokemon.moves.length) {
         const mappedPokemon = await this.pokemonHelper.mapPokemon(newPokemon);
         this.selectedPokemons.push(mappedPokemon);
+        this.progressStage = 1;
       } else {
         this.getNewPokemon();
       }
@@ -131,15 +152,51 @@ export class VArenaComponent implements OnInit {
 
   selectPokemon(index: number) {
     this.playerPokemon = this.selectedPokemons[index];
-    this.enemyPokemon = this.selectedPokemons.find((_pokemon, i) => i != index);
     this.playerPokemon.attackMultiplier = this.pokemonHelper.getAttackMultiplier(this.playerPokemon.typeRelations, this.enemyPokemon.type);
-    this.enemyPokemon.attackMultiplier = this.pokemonHelper.getAttackMultiplier(this.enemyPokemon.typeRelations, this.playerPokemon.type);
-    this.startBattle();
+    if (this.selectedBattleType.type == 'solo') {
+      this.enemyPokemon = this.selectedPokemons.find((_pokemon, i) => i != index);
+      this.enemyPokemon.attackMultiplier = this.pokemonHelper.getAttackMultiplier(this.enemyPokemon.typeRelations, this.playerPokemon.type);
+      this.startBattle();
+    }
+    if (this.selectedBattleType.type == 'online') {
+      this.opponentWaiting = true;
+      if (!this.enemyPokemon.id) {
+        this.onlineBattle.startingPlayer = this.player;
+      }
+      this.onlineBattle.enemyName = this.player;
+      this.onlineBattle.enemyPokemon = this.playerPokemon;
+      this.onlineService.updateBattle(this.onlineBattle, this.battleSocket);
+      this.checkOnlineBattle();
+    }
+  }
+
+  subscribeToBattle() {
+    this.onlineService.ongoingBattle.subscribe(res => {
+      const result = (res as any);
+      this.enemyPokemon = result.enemyPokemon;
+      this.enemyName = result.enemyName;
+      if (this.progressStage && this.progressStage < 2) {
+        this.checkOnlineBattle();
+      }
+      if (result.attackData) {
+        this.applyDamage(this.playerPokemon, result.attackData, this.playerPokemon.attackMultiplier);
+      }
+    })
+  }
+
+  checkOnlineBattle() {
+    if (this.enemyPokemon.id && this.playerPokemon.id) {
+      this.opponentWaiting = false;
+      this.startBattle();
+    }
   }
 
   startBattle() {
     this.progressStage = 2;
     this.playerTurn = true;
+    if (this.selectedBattleType.type == 'online' && this.onlineBattle.startingPlayer != this.player) {
+        this.playerTurn = false;
+    }
   }
 
   async launchAttack(index: number, attack: any, attacker: string) {
@@ -152,6 +209,11 @@ export class VArenaComponent implements OnInit {
     }
     this.applyDamage(defending, attackData, attacking.attackMultiplier);
     attacking = this.pokemonHelper.addNewAttack(attacking, index);
+
+    if (this.selectedBattleType.type == 'online') {
+      this.onlineBattle.attackData = attackData;
+      this.onlineService.updateBattle(this.onlineBattle, this.battleSocket);
+    }
   }
 
   applyDamage(pokemon: SelectedPokemon, attackData: any, attackMultiplier: number) {
@@ -170,7 +232,7 @@ export class VArenaComponent implements OnInit {
   }
 
   checkTurn() {
-    if (!this.playerTurn) {
+    if (!this.playerTurn && this.selectedBattleType.type == 'solo') {
       setTimeout(() => {
         const randomAttack = this.utils.getRandomItems(this.enemyPokemon.attacks, 1, RandomTypeArrayTypes.Object)[0];
         const index = this.enemyPokemon.attacks.findIndex(attack => attack.move.name == randomAttack.move.name);
@@ -184,9 +246,10 @@ export class VArenaComponent implements OnInit {
     setTimeout(() => {
       this.showModal = !this.showModal;
     }, 500);
-    const payload = await new NewBattleRequest(this.player, this.selectedBattleType, this.enemyPokemon.damageTaken);
+    const payload = await new NewBattleRequest(this.player, this.selectedBattleType.id, this.enemyPokemon.damageTaken);
     this.battleService.saveBattleResult(payload).toPromise().then(res => {
-      console.log('YES ', res);
+      console.log(res);
+      this.onlineService.endBattle(this.battleSocket);
     })
   }
 }

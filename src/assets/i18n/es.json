@@ -36,7 +36,10 @@
         "enemyTurnMsg": "¡Es el turno de {{ name }} para atacar!",
         "battleResultWon": "¡Has ganado!",
         "battleResultLost": "Has perdido...",
-        "comingSoon": "¡Próximamente!"
+        "comingSoon": "¡Próximamente!",
+        "waitingOpponent": "Esperando al contrincante...",
+        "onlineRoom": "Jugadores online disponibles:",
+        "onlineRoomNone": "No hay jugadores disponibles en este momento..."
     },
     "RANKINGS": {
         "title": "Clasificaciones",

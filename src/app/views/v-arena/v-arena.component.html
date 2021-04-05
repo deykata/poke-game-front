@@ -10,12 +10,12 @@
         </ul>
     </div>
 
-    <app-online-room *ngIf="progressStage == null"></app-online-room>
+    <app-online-room *ngIf="progressStage == null" (acceptedBattle)="prepareOnlineBattle($event)"></app-online-room>
 
     <h1 *ngIf="progressStage > 0">{{ 'ARENA.title' | translate }}</h1>
     <p *ngIf="progressStage == 0" class="themed">{{ 'ARENA.progressStage0' | translate}}</p>
     
-    <div class="pokemon-selection" *ngIf="progressStage == 1">
+    <div class="pokemon-selection" *ngIf="progressStage == 1 && !opponentWaiting">
         <h2>{{ 'ARENA.progressStage1' | translate }}</h2>
         <div class="grid">
             <a class="grid--item col6 pgr-item" href="javascript:void(0);" (click)="selectPokemon(i)" *ngFor="let pokemon of selectedPokemons; let i = index;">
@@ -27,6 +27,8 @@
         </div>
     </div>
 
+    <p *ngIf="opponentWaiting" class="themed">{{ 'ARENA.waitingOpponent' | translate}}</p>
+
     <div class="pokemon-battle" *ngIf="progressStage >= 2">
         <div class="grid">
             <div class="grid--item col6">
@@ -36,7 +38,7 @@
             </div>
             <div class="grid--item col6">
                 <div class="pokemon enemy">
-                    <app-battle-card title="COM" [pokemon]="enemyPokemon" type="blue"></app-battle-card>
+                    <app-battle-card [title]="enemyName ? enemyName : 'COM'" [pokemon]="enemyPokemon" type="blue"></app-battle-card>
                 </div>
             </div>
         </div>
@@ -60,7 +62,7 @@
         </div>
     </div>
 
-    <div class="restart-arena" *ngIf="progressStage == 1">
+    <div class="restart-arena" *ngIf="progressStage == 1 && selectedBattleType.type == 'solo'">
         <app-ui-button [text]="'ARENA.reload' | translate" (emitter)="restartArena()"></app-ui-button>
     </div>
 </div>

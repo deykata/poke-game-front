@@ -18,7 +18,7 @@ export class PokemonHelper {
     const pokemonMoves = this.utils.filterArrays(pokemon.moves, pokemonAttacks);
     const pokemonType = pokemon.types[0].type.name;
     const typeRelations = await this.pokeApi.getPokemonType(pokemonType).toPromise();
-    const mappedPokemon = new SelectedPokemon(pokemon.name, pokemon.stats[0].base_stat, pokemon.stats[2].base_stat, pokemon.sprites.other['official-artwork'].front_default, pokemonType, typeRelations, pokemonAttacks, pokemonMoves);
+    const mappedPokemon = new SelectedPokemon(pokemon.id, pokemon.name, pokemon.stats[0].base_stat, pokemon.stats[2].base_stat, pokemon.sprites.other['official-artwork'].front_default, pokemonType, typeRelations, pokemonAttacks, pokemonMoves);
     return mappedPokemon;
   }
 

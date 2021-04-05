@@ -1,4 +1,5 @@
 export class SelectedPokemon {
+    id: number;
     name: string;
     hp: number;
     defense: number;
@@ -12,6 +13,7 @@ export class SelectedPokemon {
     damageTaken: number = 0;
 
     constructor(
+        id: number,
         name: string,
         hp: number,
         defense: number,
@@ -21,6 +23,7 @@ export class SelectedPokemon {
         attacks: any,
         moves: any
     ) {
+        this.id = id;
         this.name = name.charAt(0).toUpperCase() + name.slice(1);
         this.hp = hp;
         this.defense = defense;

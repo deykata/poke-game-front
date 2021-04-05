@@ -1,0 +1,8 @@
+<div class="challenge">
+    <p class="title">Battle challenge</p>
+    <p class="msg themed">{{ challenger }} is challenging you to a battle!</p>
+    <div class="btns-wrapper">
+        <app-ui-button text="Decline" (emitter)="challengeResponse(false)"></app-ui-button>
+        <app-ui-button text="Accept" (emitter)="challengeResponse(true)"></app-ui-button>
+    </div>
+</div>

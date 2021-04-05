@@ -1,0 +1,17 @@
+.challenge {
+    text-align: center;
+    .title {
+        color: var(--primary-blue);
+        font-size: 34px;
+        font-weight: 700;
+        font-style: italic;
+        padding: 5px 0 10px;
+    }
+    .msg {
+        padding-bottom: 30px;
+    }
+
+    app-ui-button {
+        margin: 0 5px;
+    }
+}

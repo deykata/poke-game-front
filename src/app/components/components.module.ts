@@ -12,6 +12,7 @@ import { HeaderComponent } from './structure/header/header.component';
 import { UiTableComponent } from './ui/ui-table/ui-table.component';
 import { RankingsComponent } from './structure/rankings/rankings.component';
 import { OnlineRoomComponent } from './pokemon/online-room/online-room.component';
+import { BattleChallengeComponent } from './pokemon/battle-challenge/battle-challenge.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { OnlineRoomComponent } from './pokemon/online-room/online-room.component
     SettingsComponent,
     HeaderComponent,
     RankingsComponent,
-    OnlineRoomComponent
+    OnlineRoomComponent,
+    BattleChallengeComponent
   ],
   exports: [
     UiButtonComponent,

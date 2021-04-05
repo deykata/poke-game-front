@@ -1,0 +1,20 @@
+.rooms-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+
+    .room {
+        display: block;
+        padding: 10px 20px;
+        background: azure;
+        margin-right: 10px;
+        cursor: pointer;
+
+        &:hover {
+            background: lavender;
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+        }
+    }
+}
